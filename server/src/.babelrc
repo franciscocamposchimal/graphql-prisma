@@ -3,6 +3,6 @@
         "env"
     ],
     "plugins": [
-        "transform-pbject-rest-spread"
+        "transform-object-rest-spread"
     ]
 }
