@@ -1,28 +1,23 @@
 const Mutation = {
-    createUser(parent, args, ctx, info){
-        /*
-        args.name
-        args.email
-        args.age
-        */
-       const user = {
-           id: "",
-           ...args.data
-       };
-
-       if(foundEmail){
-           throw new Error("Email exist.");
-       }
-        return {
-
-        };
+    async createUser(parent, args, { prisma }, info){
+        const foundEmail = await prisma.exists.User( {email: args.data.email} );
+        if(foundEmail){
+            throw new Error("Email exist.");
+        }
+        return prisma.mutation.createUser({ data: args.data }, info);
     },
-    deleteUser(parent, args, ctx, info){
-        //args.id
-        return user;
+    async deleteUser(parent, args, { prisma }, info){
+        const userExist = await prisma.exists.User( {id: args.id} );
+        if(!userExist){
+            throw new Error('User not found');
+        }
+        return prisma.mutation.deleteUser({ 
+            where: {
+                id: args.id
+            }
+        }, info);
     },
     createPost(parent, args, ctx, info){
-        //args.author
         if(!userExist){
             throw new Error('User not found');
         }
