@@ -1,22 +1,20 @@
 const Subscription = {
-    count: {
-        subscribe(parent, args, { pubsub }){
-            let count = 0;
-            setInterval(() => {
-                count++;
-                pubsub.publish('count', {
-                    count
-                });
-            },1000);
-
-            return pubsub.asyncIterator('count');
-        }
-    },
-    comment: {
-        subscribe(parent, { postId }, { db, pubsub }, info){
-            return pubsub.asyncIterator(`comment ${postId}`);
-        }
-    }
+	comment: {
+		subscribe(parent, { postId }, { prisma }, info) {
+			return prisma.subscription.comment(
+				{
+					where: {
+						node: {
+							post: {
+								id: postId
+							}
+						}
+					}
+				},
+				info
+			);
+		}
+	}
 };
 
 export { Subscription as default };

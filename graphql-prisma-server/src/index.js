@@ -5,20 +5,23 @@ import User from './resolvers/User';
 import Post from './resolvers/Post';
 import Comment from './resolvers/Comment';
 import prisma from './prisma';
-const pubsub = new PubSub();
+import Subscription from './resolvers/Subscription'
 
 const server = new GraphQLServer({
     typeDefs: './src/schema.graphql',
     resolvers: {
         Query,
         Mutation,
+        Subscription,
         User,
         Post,
         Comment,
     },
-    context:{
-        prisma,
-        pubsub
+    context(request){
+        return {
+            prisma,
+            request
+        }
     }
 });
 
