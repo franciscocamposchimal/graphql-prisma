@@ -1,0 +1,46 @@
+"""
+User object
+"""
+type User {
+	id: ID!
+	name: String!
+	email: String!
+	age: Int
+	password: String!
+	posts: [Post!]!
+	comments: [Comment!]!
+}
+"""
+Response for login
+"""
+type AuthPayload {
+	token: String!
+	user: User!
+}
+
+"""
+Body for login
+"""
+input LoginUserInput {
+	email: String!
+	password: String!
+}
+
+"""
+Create new user
+"""
+input CreateUserInput {
+	name: String!
+	email: String!
+	age: Int
+	password: String!
+}
+
+"""
+Update user
+"""
+input UpdateUserInput {
+	name: String
+	email: String
+	age: Int
+}

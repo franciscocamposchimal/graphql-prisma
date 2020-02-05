@@ -1,5 +1,6 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import getUser from '../utils/getUser';
 
 const Mutation = {
 	async login(parent, args, { prisma }, info) {

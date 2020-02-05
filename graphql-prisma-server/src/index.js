@@ -5,10 +5,11 @@ import User from './resolvers/User';
 import Post from './resolvers/Post';
 import Comment from './resolvers/Comment';
 import prisma from './prisma';
-import Subscription from './resolvers/Subscription'
+import Subscription from './resolvers/Subscription';
+import { typeDefs } from './data/schema';
 
 const server = new GraphQLServer({
-    typeDefs: './src/schema.graphql',
+    typeDefs,
     resolvers: {
         Query,
         Mutation,
