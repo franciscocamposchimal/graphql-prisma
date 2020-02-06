@@ -1,8 +1,7 @@
-import bcryptjs from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import getUser from '../utils/getUser';
-import * as fs from 'fs';
-import * as path from 'path';
+import generateToken from '../utils/generateJWT';
+import hashPassword from '../utils/hashPassword';
 
 const Mutation = {
 	async login(parent, args, { prisma }, info) {
@@ -16,30 +15,20 @@ const Mutation = {
 			throw new Error('Unable to login');
 		}
 
-		const isMatch = await bcryptjs.compare(args.data.password, user.password);
+		const isMatch = await bcrypt.compare(args.data.password, user.password);
 
 		if (!isMatch) {
 			throw new Error('Unable to login');
 		}
 
-		const privateKey = fs.readFileSync(path.join(__dirname, `../keys/private.key`));
-		const token = jwt.sign(
-			{ userId: user.id }, 
-			{ key: privateKey, passphrase: 'cervus' }, 
-			{ algorithm: 'RS256' },
-			{ expiresIn: '1h' }
-			);
-
 		return {
 			user,
-			token
+			token: generateToken(user.id)
 		};
 	},
 	async createUser(parent, args, { prisma }, info) {
-		if (args.data.password.length < 3) {
-			throw new Error('Password must be longer.');
-		}
-		const password = await bcryptjs.hash(args.data.password, 10);
+
+		const password = await hashPassword(args.data.password);
 
 		const user = prisma.mutation.createUser({
 			data: {
@@ -48,17 +37,9 @@ const Mutation = {
 			}
 		});
 
-		const privateKey = fs.readFileSync(path.join(__dirname, `../keys/private.key`));
-		const token = jwt.sign(
-			{ userId: user.id },
-			{ key: privateKey, passphrase: 'cervus' },
-			{ algorithm: 'RS256' },
-			{ expiresIn: '1h' }
-		);
-
 		return {
 			user,
-			token
+			token: generateToken(user.id)
 		};
 	},
 	updateUser(parent, args, { prisma, request }, info) {
@@ -156,7 +137,7 @@ const Mutation = {
 			published: true
 		});
 
-		if(!postExist){
+		if (!postExist) {
 			throw new Error('Unable to find post.');
 		}
 		return prisma.mutation.createComment(

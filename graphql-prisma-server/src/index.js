@@ -5,16 +5,16 @@ import { typeDefs } from './data/schema';
 import { resolvers } from './resolvers/index';
 
 const server = new GraphQLServer({
-    typeDefs,
-    resolvers,
-    context(request){
-        return {
-            prisma,
-            request
-        }
-    }
+	typeDefs,
+	resolvers,
+	context(request) {
+		return {
+			prisma,
+			request
+		};
+	}
 });
 
-server.start( ()=> {
-    console.log('Server online...');
+server.start(() => {
+	console.log('Server online...');
 });

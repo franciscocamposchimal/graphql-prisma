@@ -1,7 +1,7 @@
 import getUser from '../utils/getUser';
 const Query = {
 	users(parent, args, { prisma, request }, info) {
-		const userDecoded = getUser(request, ['ADMIN', 'SELLER']);
+		const userDecoded = getUser(request, [ 'ADMIN', 'SELLER' ]);
 		console.log(userDecoded);
 		const opArgs = {};
 		if (args.query) {
@@ -35,7 +35,7 @@ const Query = {
 		return prisma.query.posts(opArgs, info);
 	},
 	comments(parent, args, { prisma }, info) {
-		return prisma.query.comments(null,info);
+		return prisma.query.comments(null, info);
 	}
 };
 
