@@ -1,7 +1,7 @@
 import getUser from '../utils/getUser';
 const Query = {
 	users(parent, args, { prisma, request }, info) {
-		const userDecoded = getUser(request);
+		const userDecoded = getUser(request, ['ADMIN', 'SELLER']);
 		console.log(userDecoded);
 		const opArgs = {};
 		if (args.query) {

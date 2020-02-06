@@ -1,6 +1,8 @@
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import getUser from '../utils/getUser';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const Mutation = {
 	async login(parent, args, { prisma }, info) {
@@ -20,11 +22,17 @@ const Mutation = {
 			throw new Error('Unable to login');
 		}
 
+		const privateKey = fs.readFileSync(path.join(__dirname, `../keys/private.key`));
+		const token = jwt.sign(
+			{ userId: user.id }, 
+			{ key: privateKey, passphrase: 'cervus' }, 
+			{ algorithm: 'RS256' },
+			{ expiresIn: '1h' }
+			);
+
 		return {
 			user,
-			token: jwt.sign({ userID: user.id }, '3bb95eeade896657c4526e74ff2a2862039d0a0fe8a9e7155b5fe492cbd78387', {
-				algorithm: 'HS256'
-			})
+			token
 		};
 	},
 	async createUser(parent, args, { prisma }, info) {
@@ -40,11 +48,17 @@ const Mutation = {
 			}
 		});
 
+		const privateKey = fs.readFileSync(path.join(__dirname, `../keys/private.key`));
+		const token = jwt.sign(
+			{ userId: user.id },
+			{ key: privateKey, passphrase: 'cervus' },
+			{ algorithm: 'RS256' },
+			{ expiresIn: '1h' }
+		);
+
 		return {
 			user,
-			token: jwt.sign({ userID: user.id }, '3bb95eeade896657c4526e74ff2a2862039d0a0fe8a9e7155b5fe492cbd78387', {
-				algorithm: 'HS256',
-			  })
+			token
 		};
 	},
 	updateUser(parent, args, { prisma, request }, info) {
@@ -135,9 +149,16 @@ const Mutation = {
 			info
 		);
 	},
-	createComment(parent, args, { prisma, request }, info) {
+	async createComment(parent, args, { prisma, request }, info) {
 		const userId = getUser(request);
+		const postExist = await prisma.exist.Post({
+			id: args.data.post,
+			published: true
+		});
 
+		if(!postExist){
+			throw new Error('Unable to find post.');
+		}
 		return prisma.mutation.createComment(
 			{
 				data: {

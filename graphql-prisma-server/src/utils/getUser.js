@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const getUser = (request, role = []) => {
     const header = request.request.headers.authorization;
@@ -8,8 +10,10 @@ const getUser = (request, role = []) => {
     }
 
     const token = header.replace('Bearer ', '');
-    const decoded = jwt.verify(token, '3bb95eeade896657c4526e74ff2a2862039d0a0fe8a9e7155b5fe492cbd78387');
+    const cert = fs.readFileSync( path.join(__dirname,`../keys/public.pem`));
+    const decoded = jwt.verify(token, cert, { algorithms: ['RS256']});
     console.log('ROLES PERMITED: ',role);
+    console.log('DECODE: ', decoded)
     return decoded.userId;
 };
 
