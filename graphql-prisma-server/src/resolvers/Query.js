@@ -3,7 +3,12 @@ const Query = {
 	users(parent, args, { prisma, request }, info) {
 		const userDecoded = getUser(request, [ 'ADMIN', 'SELLER' ]);
 		console.log(userDecoded);
-		const opArgs = {};
+		const opArgs = {
+			first: args.first,
+			skip: args.skip,
+			after: args.after,
+			orderBy: args.orderBy
+		};
 		if (args.query) {
 			opArgs.where = {
 				OR: [
@@ -19,7 +24,11 @@ const Query = {
 		return prisma.query.users(opArgs, info);
 	},
 	posts(parent, args, { prisma }, info) {
-		const opArgs = {};
+		const opArgs = {
+			first: args.first,
+			skip: args.skip,
+			after: args.after
+		};
 		if (args.query) {
 			opArgs.where = {
 				OR: [
