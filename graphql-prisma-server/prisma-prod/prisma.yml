@@ -1,3 +1,4 @@
+#endpoint: ${env:PRISMA_ENDPOINT}
 endpoint: http://localhost:4466/default/prod
 datamodel: datamodel.prisma
 secret: 5989796f6ab867450accd81fff145bed
