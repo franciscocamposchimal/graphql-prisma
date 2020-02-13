@@ -9,6 +9,8 @@ type User {
 	password: String!
 	posts: [Post!]!
 	comments: [Comment!]!
+	createdAt: String
+  	updatedAt: String
 }
 """
 Response for login
@@ -43,4 +45,24 @@ input UpdateUserInput {
 	name: String
 	email: String
 	age: Int
+}
+
+"""
+OrderBy
+"""
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  email_ASC
+  email_DESC
+  age_ASC
+  age_DESC
+  password_ASC
+  password_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }

@@ -5,6 +5,8 @@ type Post {
 	published: Boolean!
 	author: User!
 	comments: [Comment!]!
+	createdAt: String
+  	updatedAt: String
 }
 
 input CreatePostInput {
