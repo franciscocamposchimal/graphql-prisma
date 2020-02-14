@@ -1,5 +1,5 @@
 # source: http://localhost:4466/default/prod
-# timestamp: Tue Feb 04 2020 14:26:37 GMT-0600 (GMT-06:00)
+# timestamp: Fri Feb 14 2020 00:41:47 GMT-0600 (GMT-06:00)
 
 type AggregateComment {
   count: Int!
@@ -21,8 +21,8 @@ type BatchPayload {
 type Comment implements Node {
   id: ID!
   text: String!
-  author: User!
-  post: Post!
+  author: User
+  post: Post
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -40,8 +40,8 @@ type CommentConnection {
 input CommentCreateInput {
   id: ID
   text: String!
-  author: UserCreateOneWithoutCommentsInput!
-  post: PostCreateOneWithoutCommentsInput!
+  author: UserCreateOneWithoutCommentsInput
+  post: PostCreateOneWithoutCommentsInput
 }
 
 input CommentCreateManyWithoutAuthorInput {
@@ -57,13 +57,13 @@ input CommentCreateManyWithoutPostInput {
 input CommentCreateWithoutAuthorInput {
   id: ID
   text: String!
-  post: PostCreateOneWithoutCommentsInput!
+  post: PostCreateOneWithoutCommentsInput
 }
 
 input CommentCreateWithoutPostInput {
   id: ID
   text: String!
-  author: UserCreateOneWithoutCommentsInput!
+  author: UserCreateOneWithoutCommentsInput
 }
 
 """An edge in a connection."""
@@ -267,8 +267,8 @@ input CommentSubscriptionWhereInput {
 
 input CommentUpdateInput {
   text: String
-  author: UserUpdateOneRequiredWithoutCommentsInput
-  post: PostUpdateOneRequiredWithoutCommentsInput
+  author: UserUpdateOneWithoutCommentsInput
+  post: PostUpdateOneWithoutCommentsInput
 }
 
 input CommentUpdateManyDataInput {
@@ -310,12 +310,12 @@ input CommentUpdateManyWithWhereNestedInput {
 
 input CommentUpdateWithoutAuthorDataInput {
   text: String
-  post: PostUpdateOneRequiredWithoutCommentsInput
+  post: PostUpdateOneWithoutCommentsInput
 }
 
 input CommentUpdateWithoutPostDataInput {
   text: String
-  author: UserUpdateOneRequiredWithoutCommentsInput
+  author: UserUpdateOneWithoutCommentsInput
 }
 
 input CommentUpdateWithWhereUniqueWithoutAuthorInput {
@@ -546,7 +546,7 @@ type Post implements Node {
   title: String!
   body: String!
   published: Boolean!
-  author: User!
+  author: User
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -567,7 +567,7 @@ input PostCreateInput {
   title: String!
   body: String!
   published: Boolean!
-  author: UserCreateOneWithoutPostsInput!
+  author: UserCreateOneWithoutPostsInput
   comments: CommentCreateManyWithoutPostInput
 }
 
@@ -594,7 +594,7 @@ input PostCreateWithoutCommentsInput {
   title: String!
   body: String!
   published: Boolean!
-  author: UserCreateOneWithoutPostsInput!
+  author: UserCreateOneWithoutPostsInput
 }
 
 """An edge in a connection."""
@@ -850,7 +850,7 @@ input PostUpdateInput {
   title: String
   body: String
   published: Boolean
-  author: UserUpdateOneRequiredWithoutPostsInput
+  author: UserUpdateOneWithoutPostsInput
   comments: CommentUpdateManyWithoutPostInput
 }
 
@@ -883,9 +883,11 @@ input PostUpdateManyWithWhereNestedInput {
   data: PostUpdateManyDataInput!
 }
 
-input PostUpdateOneRequiredWithoutCommentsInput {
+input PostUpdateOneWithoutCommentsInput {
   create: PostCreateWithoutCommentsInput
   connect: PostWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: PostUpdateWithoutCommentsDataInput
   upsert: PostUpsertWithoutCommentsInput
 }
@@ -901,7 +903,7 @@ input PostUpdateWithoutCommentsDataInput {
   title: String
   body: String
   published: Boolean
-  author: UserUpdateOneRequiredWithoutPostsInput
+  author: UserUpdateOneWithoutPostsInput
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -1284,16 +1286,20 @@ input UserUpdateManyMutationInput {
   password: String
 }
 
-input UserUpdateOneRequiredWithoutCommentsInput {
+input UserUpdateOneWithoutCommentsInput {
   create: UserCreateWithoutCommentsInput
   connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: UserUpdateWithoutCommentsDataInput
   upsert: UserUpsertWithoutCommentsInput
 }
 
-input UserUpdateOneRequiredWithoutPostsInput {
+input UserUpdateOneWithoutPostsInput {
   create: UserCreateWithoutPostsInput
   connect: UserWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: UserUpdateWithoutPostsDataInput
   upsert: UserUpsertWithoutPostsInput
 }
