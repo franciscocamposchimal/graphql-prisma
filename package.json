@@ -1,16 +1,22 @@
 {
   "name": "prisma-test",
-  "version": "1.0.0",
   "description": "test of orm syntax",
+  "version": "1.0.0",
+  "engines": {
+    "node": "10.16.3",
+    "yarn": "1.22.0"
+  },
   "main": "index.js",
   "author": "FrankoT800",
   "license": "MIT",
   "scripts": {
-    "start": "",
+    "start": "env-cmd -f ./config/prod.env node dist/index.js",
+    "heroku-postbuild": "babel src --out-dir dist --copy-files",
     "dev": "env-cmd -f ./config/dev.env nodemon src/index.js --ext js,graphql --exec babel-node",
     "get-schema": "graphql get-schema -p prisma"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.8.3",
     "babel-cli": "6.26.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-preset-env": "^1.7.0",
