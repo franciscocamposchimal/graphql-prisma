@@ -21,6 +21,7 @@ const Query = {
 				]
 			};
 		}
+		console.log(JSON.stringify(opArgs));
 		return prisma.query.users(opArgs, info);
 	},
 	posts(parent, args, { prisma }, info) {

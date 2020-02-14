@@ -1,6 +1,8 @@
 # import * from 'users.graphql'
 # import * from 'posts.graphql'
 # import * from 'comments.graphql'
+# import UserWhereInput from '../generated/prisma.graphql'
+# import * from 'filters.graphql'
 
 type Query {
 	users(query: String, first: Int, skip: Int, after: String, orderBy: UserOrderByInput): [User!]!
@@ -19,6 +21,7 @@ type Mutation {
 	createComment(data: CreateCommentInput!): Comment!
 	deleteComment(id: ID!): Comment!
 	updateComment(id: ID!, data: UpdateCommentInput!): Comment!
+	userCustomFilter(filter: FilterInput): String!
 }
 
 type Subscription {

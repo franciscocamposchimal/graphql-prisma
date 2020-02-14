@@ -202,6 +202,10 @@ const Mutation = {
 			},
 			info
 		);
+	},
+	userCustomFilter(parent, args, { prisma, request }, info) {
+		console.log( JSON.stringify(args.filter) );
+		return "OK";
 	}
 };
 

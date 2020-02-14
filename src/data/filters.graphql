@@ -1,0 +1,10 @@
+input FilterInput {
+	name: String
+	conditions: ConditionInput
+}
+
+input ConditionInput {
+    first: Int
+    orderBy: UserOrderByInput
+    where: UserWhereInput
+}
