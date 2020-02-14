@@ -3,7 +3,7 @@
   "description": "test of orm syntax",
   "version": "1.0.0",
   "engines": {
-    "node": "10.16.3",
+    "node": "12.16.0",
     "yarn": "1.22.0"
   },
   "main": "index.js",
