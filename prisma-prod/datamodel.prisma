@@ -1,16 +1,4 @@
-type User {
-  id: ID! @id
-  name: String!
-  email: String! @unique
-  age: Int
-  password: String! 
-  posts: [Post!]! @relation(name: "PostByAuthor", onDelete: CASCADE)
-  comments: [Comment!]! @relation(name: "CommentAuthor", onDelete: CASCADE)
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
-}
-
-type Post {
+type Post @db(name: "post") {
   id: ID! @id
   title: String!
   body: String!
@@ -21,11 +9,22 @@ type Post {
   updatedAt: DateTime! @updatedAt
 }
 
-type Comment {
+type Comment @db(name: "comment") {
   id: ID! @id
   text: String!
   author: User @relation(name: "CommentAuthor", onDelete: SET_NULL)
   post: Post @relation(name: "CommentByPost", onDelete: SET_NULL)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+type User @db(name: "user") {
+  id: ID! @id
+  name: String!
+  email: String! @unique
+  age: Int
+  password: String! 
+  posts: [Post!]! @relation(name: "PostByAuthor", onDelete: CASCADE)
+  comments: [Comment!]! @relation(name: "CommentAuthor", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
